@@ -11,14 +11,17 @@ document.addEventListener("DOMContentLoaded", function() {
                 walletAddress = resp.publicKey.toString();
                 connectButton.textContent = walletAddress.slice(0, 5) + '...' + walletAddress.slice(-4);
                 connectButton.disabled = true;
+                // Save wallet address to local storage
+                localStorage.setItem('phantomWalletAddress', walletAddress);
             } catch (err) {
                 console.error('Wallet connection failed:', err);
             }
         } else {
             const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
             if (isMobile) {
-                // Open Phantom app using deep link
-                window.location.href = 'phantom://open?action=connect&network=mainnet-beta&redirect=' + encodeURIComponent(window.location.href);
+                const redirectLink = window.location.href;
+                // Use deep link for mobile devices
+                window.location.href = 'phantom://open?action=connect&network=mainnet-beta&redirect=' + encodeURIComponent(redirectLink);
             } else {
                 alert('Phantom Wallet not found. Please install it from https://phantom.app/');
             }
@@ -28,6 +31,8 @@ document.addEventListener("DOMContentLoaded", function() {
     async function bumpProject() {
         const projectAddress = document.getElementById('project-address').value;
         const bumpDuration = document.getElementById('bump-duration').value;
+
+        walletAddress = walletAddress || localStorage.getItem('phantomWalletAddress');
 
         if (!walletAddress) {
             alert('Please connect your wallet first.');
@@ -45,6 +50,13 @@ document.addEventListener("DOMContentLoaded", function() {
         setTimeout(() => {
             notifications.innerHTML = `Bump successful for project ${projectAddress}!`;
         }, 2000);
+    }
+
+    // Check if wallet is already connected
+    walletAddress = localStorage.getItem('phantomWalletAddress');
+    if (walletAddress) {
+        connectButton.textContent = walletAddress.slice(0, 5) + '...' + walletAddress.slice(-4);
+        connectButton.disabled = true;
     }
 
     connectButton.addEventListener('click', connectWallet);
