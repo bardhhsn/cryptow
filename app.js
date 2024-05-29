@@ -17,7 +17,8 @@ document.addEventListener("DOMContentLoaded", function() {
         } else {
             const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
             if (isMobile) {
-                window.location.href = 'https://phantom.app/ul/browse/' + encodeURIComponent(window.location.href);
+                // Open Phantom app using deep link
+                window.location.href = 'phantom://open?action=connect&network=mainnet-beta&redirect=' + encodeURIComponent(window.location.href);
             } else {
                 alert('Phantom Wallet not found. Please install it from https://phantom.app/');
             }
