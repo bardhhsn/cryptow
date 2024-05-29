@@ -15,7 +15,12 @@ document.addEventListener("DOMContentLoaded", function() {
                 console.error('Wallet connection failed:', err);
             }
         } else {
-            alert('Phantom Wallet not found. Please install it from https://phantom.app/');
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+            if (isMobile) {
+                window.location.href = 'https://phantom.app/ul/browse/' + encodeURIComponent(window.location.href);
+            } else {
+                alert('Phantom Wallet not found. Please install it from https://phantom.app/');
+            }
         }
     }
 
