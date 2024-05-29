@@ -13,6 +13,8 @@ document.addEventListener("DOMContentLoaded", function() {
                 connectButton.disabled = true;
                 // Save wallet address to local storage
                 localStorage.setItem('phantomWalletAddress', walletAddress);
+                // Redirect back to main page
+                window.location.href = window.location.href.split('?')[0];
             } catch (err) {
                 console.error('Wallet connection failed:', err);
             }
